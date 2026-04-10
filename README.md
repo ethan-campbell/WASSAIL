@@ -45,7 +45,7 @@ This repository contains code to run the University of Washington Snow on Antarc
 
 > Note: the sub-directory `Data/Processed/wassail_tuning` contains three files. `buoy_split_assignments.csv` denotes the random partioning between the calibration and validation sets of snow buoys used in the current model version. `snow_model_params_tuning.csv` is a table of the parameter values and statistics throughout the calibration routine; recall that the model calibration routine has a stochastic element, so it will generate a different parameter optimization every time it is run. `parcels_input.nc` is a netCDF file containing ERA5 fields interpolated to snow buoy locations (it can be regenerated within the notebook, but is archived here for convenience). This directory also contains sub-directories `rung0` and `rung12` with output files that are helpful for reproducing some of the study visualizations (these can also be reproduced, but not without writing additional code for custom model runs).
 
-7. In the "Download and process data" cell, set the boolean variables at the top to `True` to download the corresponding data sets, as needed. I would recommend doing this individually and running the cell for each download. As mentioned above, the AWI snow buoy, NSIDC CDR Near-Real-Time ice concentration, and NSIDC Polar Pathfinder 'Quicklook' ice motion data are provided in `wassail.zip` for reproducibility and do not have to be re-downloaded unless you are running the model over different time periods.
+7. In the "Download and process data" cell, set the boolean variables at the top to `True` to download the corresponding data sets, as needed. I recommend doing this individually, running the cell for each download, and setting the switch back to `False` afterwards. As mentioned above, the AWI snow buoy, NSIDC CDR Near-Real-Time ice concentration, and NSIDC Polar Pathfinder 'Quicklook' ice motion data are provided in `wassail.zip` for reproducibility and do not have to be re-downloaded unless you are running the model over different time periods.
 
 > [!IMPORTANT]
 > Note: Some NSIDC download routines will prompt you for your NASA Earthdata login credentials; you will need an account if you do not have one already. You can set the `stored_auth` arguments to `True` if you would prefer to use credentials stored in your `~/.bash_profile` (see `df.nasa_auth()` for more details).
@@ -57,9 +57,16 @@ This repository contains code to run the University of Washington Snow on Antarc
 
 10. If you wish to reproduce the snow depth comparison figure or snow-ice formation analysis, download the Fons et al. (2023) CryoSat-2 snow depth estimates at [zenodo.org/records/7327711](https://zenodo.org/records/7327711). The monthly files should go in `Data/Sea ice thickness/Fons_2023_CryoSat2`.
 
-11. Run the next cell, "Load data/grids and regrid data".
-
+11. Run the next cell, "Load data/grids and regrid data", after setting the boolean switches for `regrid_ice_concentration`, `regrid_pathfinder`, and `regrid_pathfinder_ql` to `True`. This will regrid data to the ERA5 grid, interpolate missing data, and export new files. Note the time estimate for the Polar Pathfinder regridding routine. I suggest setting boolean switches back to `False` after it finishes.
 
 ### Instructions, part 2 – setting up and running the model:
+
+12. The next cell, "Snow model set-up and parameterizations", starts with a set of boolean switches that control offline pre-computation and exporting of four ERA5-based fields: 100-h forward-looking wind speed (`reexport_si10_average`), blowing snow sublimation (`reexport_Q_sub`), surface sublimation (`reexport_Q_surf`), and lead trapping (`reexport_Q_ocean`). Set these to `True` and run the cell, then change back to `False`. The processed fields will be stored in `Data/Processed/wassail_era5_derived/`.
+
+> Note: The other boolean values can likely be ignored, unless you prefer for the model to compute these fields on the fly during each run (this is less efficient, except perhaps for one-off/testing runs). The remainder of this cell establishes key model parameters and parameterization functions.
+
+13. The following cell, "Prescribed model run setup (snow buoys)", processes the snow buoy data in preparation for model calibration runs and interpolates ERA5 fields and derived quantities to the buoy locations. Since the pre-processed file `parcels_input.nc` is provided in `wassail.zip`, you can simply load the buoy file by setting `use_existing_parcels_input` to `True` and running this cell. Similarly, setting `use_existing_buoy_split` to `True` will reference the buoy calibration vs. validation assignments used in the paper, as denoted in the provided file `buoy_split_assignments.csv`.
+
+> Note: If you wish to regenerate the processed buoy file, then set `use_existing_parcels_input` to `False` and run the cell. To regenerate the random buoy split, then set `use_existing_buoy_split` to False.
 
 ### Instructions, part 3 – processing the model output and reproducing analyses:
