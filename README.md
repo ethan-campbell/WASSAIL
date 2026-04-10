@@ -69,12 +69,19 @@ This repository contains code to run the University of Washington Snow on Antarc
 
 > Note: If you wish to regenerate the processed buoy file, set `use_existing_parcels_input` to `False` and run the cell. To regenerate the random buoy split, set `use_existing_buoy_split` to False.
 
-14. If you are using the pre-processed buoy file `parcels_input.nc`, you do not have to run the next cell, "Launch one-time prescribed model run (to interpolate ERA5 to snow buoy locations)". However, this cell is instructive in showing how the snow model gets executed (and later parallelized), so I recommend taking time to understand it:
-- In this case, setting `launch_buoy_interpolator_run` to `True` allows execution (see the inline comments for relevant details).
+14. The next cell, "Launch one-time prescribed model run (to interpolate ERA5 to snow buoy locations)", does not have to be run if you are using the pre-processed buoy file `parcels_input.nc`.
+
+> [!TIP]
+> Even if you are not running this cell, it is instructive in illustrating how the snow model gets executed (and later parallelized), so I recommend taking time to understand the following elements:
+
+- Setting `launch_buoy_interpolator_run` to `True` allows execution (see the inline comments for relevant details).
 - The cell uses the `jupyter nbconvert` command-line utility to convert the notebook itself into a separate executable Python script (`.py` extension).
 - That script is then launched using another command-line call to `nohup python3`, which allows the job to persist so the model can run in the background. Output is sent to a `.out` file, which you can monitor using command-line tools like `less` to ensure the model is executing without errors. You can monitor the `.out` file or your Linux processes (`top -u <your_username>`) to see when the model finishes running.
-- How does the converted `.py` script run without entering a recursive loop of additional model runs? Notice that the `nohup python3` call passes a command-line argument to the script, designating it as a "worker_buoy_interpolator". This argument is checked within the script to signal that it is being run as a "worker" (not from the main Jupyter notebook). Additionally, a block comment (`"""`) is used creatively to prevent any code following the model code from being run, so the calibration routine and analysis code are ignored.
+- How does the converted `.py` script run without entering a recursive loop of additional model runs? Notice that the `nohup python3` call passes a command-line argument to the script, designating it as a "worker_buoy_interpolator". This argument is checked within the script to signal that it is being run as a "worker" (not from the main Jupyter notebook). It is important to keep boolean switches set to `False` to prevent undesired execution of data download or processing routines by worker jobs. Lastly, notice that a block comment (`"""`) is used to prevent any code following the model code from being run by the Python script, so the calibration routine and analysis code are ignored.
 
-15. 
+15. The cell "Lagrangian parcel model" is the main model code.
+- You can run the cell within the Jupyter notebook to initialize a one-off, one-year model run, such as for testing purposes. But generally you will not run this cell directly. Instead, model runs will be triggered by launching "worker" scripts, as described above.
+- The first few sections of the cell contain option switches, inputs, and some model settings. Reference the in-line comments for more details. If changing anything in this cell, keep in mind that it will impact "worker" calibration or free runs launched later in the notebook.
+- One useful feature is that the model saves output netCDF files every 7 days, by default, in `Data/Processed/wassail_output_free/<YEAR>/`. The model can be initialized from an output file by setting `restart_from_output = True` and specifying `restart_file`.
 
 ### Instructions, part 3 – processing the model output and reproducing analyses:
