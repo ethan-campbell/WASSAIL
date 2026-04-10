@@ -4,6 +4,8 @@
 
 Please contact me at [ethancc@uw.edu](mailto:ethancc@uw.edu) if you have any questions regarding this code.
 
+![WASSAIL model schematic](wassail_schematic.png)
+
 ### Attribution:
 This code is freely available for reuse as described in the MIT License included in this repository. If using this code and/or model data in an academic publication, we encourage you to provide the following citations, as appropriate:
 * **Preprint**: Campbell, E.C., Riser, S.C., Webster, M.A. (2026). Lagrangian reconstruction of snow accumulation and loss on Antarctic sea ice. _EGUsphere_ [preprint]. doi:TBD
@@ -92,3 +94,7 @@ This repository contains code to run the University of Washington Snow on Antarc
 18. Once you are satisfied with the calibration results, executing the **"Model launching routine"** cell will launch one-year free-running model simulations covering the specified range of years. These are full circumpolar integrations with Lagrangian parcels being advected by ice motion fields. Similar to the calibration routine, this set of model runs is launched by a separate Python "helper" script, `snow_lagrangian_free_launcher.py`, and no further action is needed once the cell is run beyond monitoring the status of the runs using the `.out` log files.
 
 ### Instructions, part 3 – processing the model output and reproducing analyses:
+
+Note: The following notebook cells, under **"Plots and analysis of results"**, mix model output processing with analysis and visualization. The steps described below focus on how to process the model output.
+
+19. The cells under **"Model output processing and analysis"** serve to translate the model output from the Lagrangian parcel frame to a gridded Eulerian frame.
