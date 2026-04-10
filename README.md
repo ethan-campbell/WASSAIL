@@ -20,7 +20,7 @@ This repository contains code to run the University of Washington Snow on Antarc
 
 2. A Linux server with at least several cores, for efficient parallelization of multiple one-year model runs. Single-year model runs can be run sequentially within the provided Jupyter notebook, probably on any machine, but the parallelization functionality has not been tested outside of a Linux environment. RAM may become a limiting factor if running the model on a laptop.
 
-### Step-by-step instructions for using this repository and running the model:
+### Instructions, part 1 – setting up the code and input data:
 
 1. Clone or download this GitHub repository. Unzip the `wassail.zip` file (e.g., using the command `unzip wassail.zip`), which contains a directory structure and various files.
 
@@ -30,27 +30,36 @@ This repository contains code to run the University of Washington Snow on Antarc
 
 3. The directory `Toolbox/` contains the command-line tool `h4toh5`, which converts HDF4 files to HDF5 format. A version for Linux, `h4toh5_linux_centos7`, is provided. If you need a different version for your computing environment, download it [here](https://www.hdfeos.org/software/h4toh5-def-download.php) and update the `exec_filename` variable within the `convert_to_hdf5()` function in the `download_file.py` script.
 
-4. Open and follow the main code notebook `wassail.ipynb`. I strongly recommend using JupyterLab and acquainting yourself with the notebook structure using the left-side heading navigation pane. (To learn more about how to work with Jupyter notebooks, see [jupyter.org](https://jupyter.org).)
+4. Open and follow the main code notebook `wassail.ipynb`. I strongly recommend using JupyterLab and acquainting yourself with this notebook's structure using the left-side heading navigation pane. (To learn more about how to work with Jupyter notebooks, see [jupyter.org](https://jupyter.org).)
 
 > Note: This single notebook contains almost all of the model and analysis code. The `Toolbox/` directory contains a few `.py` Python scripts with auxiliary "helper" functions, mostly for downloading and loading data. The notebook is documented throughout and is intended to be run from top to bottom, in order to download and process input data, configure the model, run the model (both in "calibration mode" and as "free-running simulations"—see the paper for details), process the output, and visualize/analyze results. Housing the entire model within a Jupyter notebook did create challenges for parallelization, which led to some interesting ad hoc solutions that are described below.
 
 5. Start by running the "Import statements" notebook cell. Confirm that the `conda` environment is functioning correctly.
 
-6. In the "Set file paths and import custom functions" cell, updating directories as needed, then run the cell:
-  - Under the appropriate system, the variable `data_dir` should point to the `Data/` directory within this repository.
+6. In the "Set file paths and import custom functions" cell, update the directory names as needed, then run the cell:
+  - Under the appropriate system, the variable `data_dir` should be updated to point to the `Data/` directory within this repository.
   - The base path for `script_dir` and `this_code_dir` should be updated to reflect the location of this repo on your system.
   - `current_results_dir` should be updated to `Results/` within this repo, or a different location on your system for storing output visuals.
-  - The sub-directory paths can be updated if you wish to use existing input data files on your system. However, this may require changes elsewhere, because this code processes and re-exports some input data files and thus expects them in a different format than how they were originally downloaded.
   - The three sub-directory paths for serialized/processed data must be updated to reflect those in the `Data/Processed/` directory, within this repo. If you want, dates can be added to the directory names for versioning purposes, as shown in the notebook.
+  - The other various sub-directory paths should be updated only if you wish to use pre-existing input data files downloaded on your system. However, this may require changes elsewhere and is not recommended, since the code processes and re-exports some input data files and thus expects them in a different format than how they were originally downloaded.
 
-> Note: the directory `wassail_tuning` contains three files. `buoy_split_assignments.csv` denotes the random partioning between the calibration and validation sets of snow buoys used in the current model version. `snow_model_params_tuning.csv` is a table of the parameter values and statistics throughout the calibration routine; recall that the model calibration routine has a stochastic element, so it will generate a different parameter optimization every time it is run. `parcels_input.nc` is a netCDF file containing ERA5 fields interpolated to snow buoy locations (it can be regenerated within the notebook, but is archived here for convenience). This directory also contains sub-directories `rung0` and `rung12` with output files that are helpful for reproducing some of the study visualizations (these can also be reproduced, but not without writing additional code for custom model runs).
+> Note: the sub-directory `Data/Processed/wassail_tuning` contains three files. `buoy_split_assignments.csv` denotes the random partioning between the calibration and validation sets of snow buoys used in the current model version. `snow_model_params_tuning.csv` is a table of the parameter values and statistics throughout the calibration routine; recall that the model calibration routine has a stochastic element, so it will generate a different parameter optimization every time it is run. `parcels_input.nc` is a netCDF file containing ERA5 fields interpolated to snow buoy locations (it can be regenerated within the notebook, but is archived here for convenience). This directory also contains sub-directories `rung0` and `rung12` with output files that are helpful for reproducing some of the study visualizations (these can also be reproduced, but not without writing additional code for custom model runs).
 
 7. In the "Download and process data" cell, set the boolean variables at the top to `True` to download the corresponding data sets, as needed. I would recommend doing this individually and running the cell for each download. As mentioned above, the AWI snow buoy, NSIDC CDR Near-Real-Time ice concentration, and NSIDC Polar Pathfinder 'Quicklook' ice motion data are provided in `wassail.zip` for reproducibility and do not have to be re-downloaded unless you are running the model over different time periods.
 
-> Note: Some NSIDC download routines will prompt you for your NASA Earthdata login credentials; you will need an account. You could also set the `stored_auth` argument to `True` if you would prefer to use credentials stored in your `~/.bash_profile` (see `df.nasa_auth()` for more details).
-> Note: The ERA5 download routine requires an ECMWF account as well as local installation of a Copernicus CDS API key; see [here](https://cds.climate.copernicus.eu/how-to-api) for details. If you see "Request is queued" after running the download code, you can exit using Ctrl-C. You can track the status of your download requests and obtain the download links at [cds.climate.copernicus.eu/requests?tab=all](https://cds.climate.copernicus.eu/requests?tab=all), then use `wget` or similar to download the ERA5 files into `Data/Reanalysis/ERA5/`. Please see the documentation in the notebook for more info. This is the only download routine that does not run fully automatically.
+> [!IMPORTANT]
+> Note: Some NSIDC download routines will prompt you for your NASA Earthdata login credentials; you will need an account if you do not have one already. You can set the `stored_auth` arguments to `True` if you would prefer to use credentials stored in your `~/.bash_profile` (see `df.nasa_auth()` for more details).
+
+> [!IMPORTANT]
+> The ERA5 download routine requires an ECMWF account as well as local installation of a Copernicus CDS API key; see [here](https://cds.climate.copernicus.eu/how-to-api) for how to set this up. If you see "Request is queued" after running the ERA5 download code, you can exit using Ctrl-C. You can track the status of your ERA5 download requests and obtain the download links at [cds.climate.copernicus.eu/requests?tab=all](https://cds.climate.copernicus.eu/requests?tab=all), then use `wget` or similar to download the ERA5 files into `Data/Reanalysis/ERA5/`. Please see the documentation in the notebook for more info. This is the only download routine that does not run fully automatically.
 
 9. Once the ERA5 data have been downloaded, run the final boolean switch (`process_era5`) in the "Download and process data" cell to process the ERA5 data. You can delete the files in `Data/Reanalysis/ERA5/To delete/` after it finishes.
 
-10. 
-11. 
+10. If you wish to reproduce the snow depth comparison figure or snow-ice formation analysis, download the Fons et al. (2023) CryoSat-2 snow depth estimates at [zenodo.org/records/7327711](https://zenodo.org/records/7327711). The monthly files should go in `Data/Sea ice thickness/Fons_2023_CryoSat2`.
+
+11. Run the next cell, "Load data/grids and regrid data".
+
+
+### Instructions, part 2 – setting up and running the model:
+
+### Instructions, part 3 – processing the model output and reproducing analyses:
