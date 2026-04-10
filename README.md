@@ -37,11 +37,11 @@ This repository contains code to run the University of Washington Snow on Antarc
 5. Start by running the "Import statements" notebook cell. Confirm that the `conda` environment is functioning correctly.
 
 6. In the "Set file paths and import custom functions" cell, update the directory names as needed, then run the cell:
-  - Under the appropriate system, the variable `data_dir` should be updated to point to the `Data/` directory within this repository.
-  - The base path for `script_dir` and `this_code_dir` should be updated to reflect the location of this repo on your system.
-  - `current_results_dir` should be updated to `Results/` within this repo, or a different location on your system for storing output visuals.
-  - The three sub-directory paths for serialized/processed data must be updated to reflect those in the `Data/Processed/` directory, within this repo. If you want, dates can be added to the directory names for versioning purposes, as shown in the notebook.
-  - The other various sub-directory paths should be updated only if you wish to use pre-existing input data files downloaded on your system. However, this may require changes elsewhere and is not recommended, since the code processes and re-exports some input data files and thus expects them in a different format than how they were originally downloaded.
+- Under the appropriate system, the variable `data_dir` should be updated to point to the `Data/` directory within this repository.
+- The base path for `script_dir` and `this_code_dir` should be updated to reflect the location of this repo on your system.
+- `current_results_dir` should be updated to `Results/` within this repo, or a different location on your system for storing output visuals.
+- The three sub-directory paths for serialized/processed data must be updated to reflect those in the `Data/Processed/` directory, within this repo. If you want, dates can be added to the directory names for versioning purposes, as shown in the notebook.
+- The other various sub-directory paths should be updated only if you wish to use pre-existing input data files downloaded on your system. However, this may require changes elsewhere and is not recommended, since the code processes and re-exports some input data files and thus expects them in a different format than how they were originally downloaded.
 
 > Note: the sub-directory `Data/Processed/wassail_tuning` contains three files. `buoy_split_assignments.csv` denotes the random partioning between the calibration and validation sets of snow buoys used in the current model version. `snow_model_params_tuning.csv` is a table of the parameter values and statistics throughout the calibration routine; recall that the model calibration routine has a stochastic element, so it will generate a different parameter optimization every time it is run. `parcels_input.nc` is a netCDF file containing ERA5 fields interpolated to snow buoy locations (it can be regenerated within the notebook, but is archived here for convenience). This directory also contains sub-directories `rung0` and `rung12` with output files that are helpful for reproducing some of the study visualizations (these can also be reproduced, but not without writing additional code for custom model runs).
 
@@ -65,8 +65,16 @@ This repository contains code to run the University of Washington Snow on Antarc
 
 > Note: The other boolean values can likely be ignored, unless you prefer for the model to compute these fields on the fly during each run (this is less efficient, except perhaps for one-off/testing runs). The remainder of this cell establishes key model parameters and parameterization functions.
 
-13. The following cell, "Prescribed model run setup (snow buoys)", processes the snow buoy data in preparation for model calibration runs and interpolates ERA5 fields and derived quantities to the buoy locations. Since the pre-processed file `parcels_input.nc` is provided in `wassail.zip`, you can simply load the buoy file by setting `use_existing_parcels_input` to `True` and running this cell. Similarly, setting `use_existing_buoy_split` to `True` will reference the buoy calibration vs. validation assignments used in the paper, as denoted in the provided file `buoy_split_assignments.csv`.
+13. The following cell, "Prescribed model run setup (snow buoys)", processes the snow buoy data in preparation for model calibration runs and interpolates ERA5 fields and derived quantities to the buoy locations. Since the pre-processed file `parcels_input.nc` is provided in `wassail.zip`, you can simply load the buoy file by setting `use_existing_parcels_input` to `True` and running this cell. Similarly, setting `use_existing_buoy_split` to `True` will reference the buoy calibration vs. validation assignments used in the paper, as specified in `buoy_split_assignments.csv`, also provided.
 
-> Note: If you wish to regenerate the processed buoy file, then set `use_existing_parcels_input` to `False` and run the cell. To regenerate the random buoy split, then set `use_existing_buoy_split` to False.
+> Note: If you wish to regenerate the processed buoy file, set `use_existing_parcels_input` to `False` and run the cell. To regenerate the random buoy split, set `use_existing_buoy_split` to False.
+
+14. If you are using the pre-processed buoy file `parcels_input.nc`, you do not have to run the next cell, "Launch one-time prescribed model run (to interpolate ERA5 to snow buoy locations)". However, this cell is instructive in showing how the snow model gets executed (and later parallelized), so I recommend taking time to understand it:
+- In this case, setting `launch_buoy_interpolator_run` to `True` allows execution (see the inline comments for relevant details).
+- The cell uses the `jupyter nbconvert` command-line utility to convert the notebook itself into a separate executable Python script (`.py` extension).
+- That script is then launched using another command-line call to `nohup python3`, which allows the job to persist so the model can run in the background. Output is sent to a `.out` file, which you can monitor using command-line tools like `less` to ensure the model is executing without errors. You can monitor the `.out` file or your Linux processes (`top -u <your_username>`) to see when the model finishes running.
+- How does the converted `.py` script run without entering a recursive loop of additional model runs? Notice that the `nohup python3` call passes a command-line argument to the script, designating it as a "worker_buoy_interpolator". This argument is checked within the script to signal that it is being run as a "worker" (not from the main Jupyter notebook). Additionally, a block comment (`"""`) is used creatively to prevent any code following the model code from being run, so the calibration routine and analysis code are ignored.
+
+15. 
 
 ### Instructions, part 3 – processing the model output and reproducing analyses:
