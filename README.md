@@ -11,7 +11,7 @@ Please contact me at [ethancc@uw.edu](mailto:ethancc@uw.edu) if you have any que
 ## Attribution
 If using the code and/or model data in an academic publication, we encourage you to provide the following citations, as appropriate:
 * **Preprint**: Campbell, E.C., Riser, S.C., Webster, M.A. (2026). Lagrangian reconstruction of snow accumulation and loss on Antarctic sea ice. _EGUsphere_ [preprint].
-* **Code archive**: Campbell, E.C. (2026, April 11). University of Washington Snow on Antarctic Ice Lagrangian (WASSAIL) model and analysis code, v1.0.0. Zenodo.
+* **Code archive**: Campbell, E.C. (2026, April 11). University of Washington Snow on Antarctic Ice Lagrangian (WASSAIL) model and analysis code, v1.0.0. Zenodo. doi:[10.5281/zenodo.19509689](https://doi.org/10.5281/zenodo.19509689)
 * **Snow model output data archive**: Campbell, E.C. (2026, April 11). University of Washington Snow on Antarctic Ice Lagrangian (WASSAIL) model data, v1.0.0 (2003-2025). Zenodo. doi:[10.5281/zenodo.19507962](https://doi.org/10.5281/zenodo.19507962)
 
 This code is freely available for reuse as described in the MIT License included in the repository. The model output data can be reused as specified in its CC-BY-4.0 license.
