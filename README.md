@@ -9,7 +9,7 @@ Please contact me at [ethancc@uw.edu](mailto:ethancc@uw.edu) if you have any que
 
 
 ## Attribution
-This code is freely available for reuse as described in the MIT License included in this repository. If using this code and/or model data in an academic publication, we encourage you to provide the following citations, as appropriate:
+This code is freely available for reuse as described in the MIT License included in the repository. If using the code and/or model data in an academic publication, we encourage you to provide the following citations, as appropriate:
 * **Preprint**: Campbell, E.C., Riser, S.C., Webster, M.A. (2026). Lagrangian reconstruction of snow accumulation and loss on Antarctic sea ice. _EGUsphere_ [preprint]. doi:TBD
 * **Code archive**: Campbell, E.C. (2026, April 10). WASSAIL model and analysis code, v1.0. Zenodo. doi:TBD
 * **Model output (snow reconstruction) archive**: Campbell, E.C., Riser, S.C., Webster, M.A. (2026, April 10). University of Washington Snow on Antarctic Ice Lagrangian (WASSAIL) model, v1.0.0 (2003-2025). Zenodo. doi:TBD
