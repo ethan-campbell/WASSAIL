@@ -100,7 +100,7 @@ This repository contains code to run the University of Washington Snow on Antarc
 > [!CAUTION]
 > It is vitally important to keep boolean switches throughout the notebook set to their default provided values (usually `False`) to prevent undesired execution of data download or processing routines by worker jobs.
 
-14. The cell **"Lagrangian parcel model"** is the main model code, which is documented with in-line comments and described thoroughly in the accompanying paper. You can run this cell within the Jupyter notebook to initialize a one-off, one-year model run, such as for testing purposes. But generally you will not need to run this cell directly. Instead, model runs will be triggered in subsequent cells by launching "worker" scripts, as described above.
+14. The cell **"Lagrangian parcel model"** is the main, time-stepping model code, which is documented with in-line comments and described thoroughly in the accompanying paper. You can run this cell within the Jupyter notebook to initialize a one-off, one-year model run, such as for testing purposes. But generally you will not need to run this cell directly. Instead, model runs will be triggered in subsequent cells by launching "worker" scripts, as described above.
 
 > [!NOTE]
 > Some key information about the model code:
