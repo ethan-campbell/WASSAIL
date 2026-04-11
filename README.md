@@ -100,11 +100,10 @@ This repository contains code to run the University of Washington Snow on Antarc
 > [!CAUTION]
 > It is vitally important to keep boolean switches throughout the notebook set to their default provided values (usually `False`) to prevent undesired execution of data download or processing routines by worker jobs.
 
-14. The cell **"Lagrangian parcel model"** is the main model code, which is documented with in-line comments and described thoroughly in the accompanying paper.
+14. The cell **"Lagrangian parcel model"** is the main model code, which is documented with in-line comments and described thoroughly in the accompanying paper. You can run this cell within the Jupyter notebook to initialize a one-off, one-year model run, such as for testing purposes. But generally you will not need to run this cell directly. Instead, model runs will be triggered in subsequent cells by launching "worker" scripts, as described above.
 
 > [!NOTE]
 > Some key information about the model code:
-> - *You can run this cell within the Jupyter notebook to initialize a one-off, one-year model run, such as for testing purposes. But generally you will not need to run this cell directly. Instead, model runs will be triggered in subsequent cells by launching "worker" scripts, as described above.*
 > - *The first few sections of the cell contain option switches, inputs, and some model settings. Reference the in-line comments for more details. If changing anything in this cell, keep in mind that it will impact "worker" calibration or free runs launched later in the notebook.*
 > - *One useful feature is that the model saves output netCDF files every 7 days, by default, in `Data/Processed/wassail_output_free/<YEAR>/`. The model can be initialized from an output file by setting `restart_from_output = True` and specifying `restart_file`.*
 > - *The model code includes an in-development "lock-up" parameterization that limits the snow available for wind transport over time after deposition; this functionality is turned off by default and is not described in the paper.*
