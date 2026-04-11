@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19507961.svg)](https://doi.org/10.5281/zenodo.19507961)
+
 # University of Washington Snow on Antarctic Ice Lagrangian (WASSAIL) model
 
 **This repository contains the model and analysis code for Campbell et al. (preprint), "Lagrangian reconstruction of snow accumulation and loss on Antarctic sea ice", submitted to _The Cryosphere_.**
