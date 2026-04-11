@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19507961.svg)](https://doi.org/10.5281/zenodo.19507961)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19509688.svg)](https://doi.org/10.5281/zenodo.19509688)
 
 # University of Washington Snow on Antarctic Ice Lagrangian (WASSAIL) model
 
