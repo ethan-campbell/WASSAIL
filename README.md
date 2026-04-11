@@ -1,6 +1,6 @@
 # University of Washington Snow on Antarctic Ice Lagrangian (WASSAIL) model
 
-**This repository contains the model and analysis code for Campbell et al. (preprint), "Lagrangian reconstruction of snow accumulation and loss on Antarctic sea ice", submitted to _The Cryosphere_, doi:TBD.**
+**This repository contains the model and analysis code for Campbell et al. (preprint), "Lagrangian reconstruction of snow accumulation and loss on Antarctic sea ice", submitted to _The Cryosphere_.**
 
 Please contact me at [ethancc@uw.edu](mailto:ethancc@uw.edu) if you have any questions regarding this code.
 
@@ -10,9 +10,9 @@ Please contact me at [ethancc@uw.edu](mailto:ethancc@uw.edu) if you have any que
 
 ## Attribution
 This code is freely available for reuse as described in the MIT License included in the repository. If using the code and/or model data in an academic publication, we encourage you to provide the following citations, as appropriate:
-* **Preprint**: Campbell, E.C., Riser, S.C., Webster, M.A. (2026). Lagrangian reconstruction of snow accumulation and loss on Antarctic sea ice. _EGUsphere_ [preprint]. doi:TBD
-* **Code archive**: Campbell, E.C. (2026, April 10). University of Washington Snow on Antarctic Ice Lagrangian (WASSAIL) model and analysis code, v1.0.0. Zenodo. doi:TBD
-* **Snow model output data archive**: Campbell, E.C., Riser, S.C., Webster, M.A. (2026, April 10). University of Washington Snow on Antarctic Ice Lagrangian (WASSAIL) model data, v1.0.0 (2003-2025). Zenodo. doi:TBD
+* **Preprint**: Campbell, E.C., Riser, S.C., Webster, M.A. (2026). Lagrangian reconstruction of snow accumulation and loss on Antarctic sea ice. _EGUsphere_ [preprint].
+* **Code archive**: Campbell, E.C. (2026, April 10). University of Washington Snow on Antarctic Ice Lagrangian (WASSAIL) model and analysis code, v1.0.0. Zenodo.
+* **Snow model output data archive**: Campbell, E.C., Riser, S.C., Webster, M.A. (2026, April 10). University of Washington Snow on Antarctic Ice Lagrangian (WASSAIL) model data, v1.0.0 (2003-2025). Zenodo. doi:[10.5281/zenodo.19507704](https://doi.org/10.5281/zenodo.19507704)
 
 
 ## Description
