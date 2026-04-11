@@ -1,6 +1,6 @@
 # University of Washington Snow on Antarctic Ice Lagrangian (WASSAIL) model
 
-**This repository contains the model and analysis Python code for Campbell et al. (preprint), "Lagrangian reconstruction of snow accumulation and loss on Antarctic sea ice", submitted to _The Cryosphere_, doi:TBD.**
+**This repository contains the model and analysis code for Campbell et al. (preprint), "Lagrangian reconstruction of snow accumulation and loss on Antarctic sea ice", submitted to _The Cryosphere_, doi:TBD.**
 
 Please contact me at [ethancc@uw.edu](mailto:ethancc@uw.edu) if you have any questions regarding this code.
 
@@ -17,7 +17,7 @@ This code is freely available for reuse as described in the MIT License included
 
 ## Description
 
-This repository contains code to run the University of Washington Snow on Antarctic Ice Lagrangian (WASSAIL) model and generate the figures presented in the associated study. The input data for the model are all publicly available (see the "Code and data availability" statement in the paper). Model output fields, representing the snow mass budget evolution, are archived separately on Zenodo (see above). Reuse of all of the above is welcomed.
+This repository contains Python code to run the University of Washington Snow on Antarctic Ice Lagrangian (WASSAIL) model and generate the figures presented in the associated study. The input data for the model are all publicly available (see the "Code and data availability" statement in the paper). Model output fields, representing the snow mass budget evolution, are archived separately on Zenodo (see above). Reuse of all of the above is welcomed.
 
 
 ## Prerequisites
