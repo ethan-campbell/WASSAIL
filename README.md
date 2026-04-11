@@ -6,23 +6,23 @@ Please contact me at [ethancc@uw.edu](mailto:ethancc@uw.edu) if you have any que
 
 ![WASSAIL model schematic](wassail_schematic.png)
 
-### Attribution:
+## Attribution:
 This code is freely available for reuse as described in the MIT License included in this repository. If using this code and/or model data in an academic publication, we encourage you to provide the following citations, as appropriate:
 * **Preprint**: Campbell, E.C., Riser, S.C., Webster, M.A. (2026). Lagrangian reconstruction of snow accumulation and loss on Antarctic sea ice. _EGUsphere_ [preprint]. doi:TBD
 * **Zenodo code archive**: Campbell, E.C. (2026, April 10). WASSAIL model and analysis code, v1.0. Zenodo. doi:TBD
 * **Zenodo model data archive**: Campbell, E.C., Riser, S.C., Webster, M.A. (2026, April 10). University of Washington Snow on Antarctic Ice Lagrangian (WASSAIL) model, v1.0.0 (2003-2025). Zenodo. doi:TBD
 
-### Description:
+## Description:
 
 This repository contains code to run the University of Washington Snow on Antarctic Ice Lagrangian (WASSAIL) model and generate the figures presented in the associated study. The data used to run the model are all publicly available (see the "Code and data availability" statement in the paper). Model output fields are archived separately on Zenodo (see above) and reuse is welcomed.
 
-### Prerequisites:
+## Prerequisites:
 
 1. Python 3 and `conda` (or `mamba`) installed. The [Anaconda](https://www.anaconda.com/download) distribution is recommended.
 
 2. A Linux server with at least several cores, for efficient parallelization of multiple one-year model runs. Single-year model runs can be run sequentially within the provided Jupyter notebook, probably on any machine, but the parallelization functionality has not been tested outside of a Linux environment. RAM may become a limiting factor if running the model on a laptop.
 
-### Instructions, part 1 – setting up the code and input data:
+## Instructions, part 1 – setting up the coding environment:
 
 1. Clone or download this GitHub repository. Unzip the `wassail.zip` file (e.g., using the command `unzip wassail.zip`), which contains a directory structure and various files.
 
@@ -53,6 +53,8 @@ This repository contains code to run the University of Washington Snow on Antarc
 > [!NOTE]
 > The sub-directory `Data/Processed/wassail_tuning` contains three files. `buoy_split_assignments.csv` denotes the random partioning between the calibration and validation sets of snow buoys used in the current model version. `snow_model_params_tuning.csv` is a table of the parameter values and statistics throughout the calibration routine; recall that the model calibration routine has a stochastic element, so it will generate a different parameter optimization every time it is run. `parcels_input.nc` is a netCDF file containing ERA5 fields interpolated to snow buoy locations (it can be regenerated within the notebook, but is archived here for convenience). This directory also contains sub-directories `rung0` and `rung12` with output files that are helpful for reproducing some of the study visualizations (these can also be reproduced, but not without writing additional code for custom model runs).
 
+## Instructions, part 2 – downloading and processing input data:
+
 7. In the **"Download and process data"** cell, set the boolean variables at the top to `True` to download the corresponding data sets, as needed. I recommend doing this individually, running the cell for each download, and setting the switch back to `False` afterwards. As mentioned above, the AWI snow buoy, NSIDC CDR Near-Real-Time ice concentration, and NSIDC Polar Pathfinder 'Quicklook' ice motion data are provided in `wassail.zip` for reproducibility and do not have to be re-downloaded unless you are running the model over different time periods.
 
 > [!IMPORTANT]
@@ -67,7 +69,7 @@ This repository contains code to run the University of Washington Snow on Antarc
 
 10. Run the next cell, **"Load data/grids and regrid data"**, after setting the boolean switches for `regrid_ice_concentration`, `regrid_pathfinder`, and `regrid_pathfinder_ql` to `True`. This will regrid data to the ERA5 grid, interpolate missing data, and export new files. Note the time estimate for the Polar Pathfinder regridding routine. I suggest setting boolean switches back to `False` after it finishes.
 
-### Instructions, part 2 – setting up and running the model:
+## Instructions, part 3 – configuring and running the model:
 
 11. The next cell, **"Snow model set-up and parameterizations"**, starts with a set of boolean switches that control offline pre-computation and exporting of four ERA5-based fields: 100-h forward-looking wind speed (`reexport_si10_average`), blowing snow sublimation (`reexport_Q_sub`), surface sublimation (`reexport_Q_surf`), and lead trapping (`reexport_Q_ocean`). Set these to `True` and run the cell, then change back to `False`. The processed fields will be stored in `Data/Processed/wassail_era5_derived/`.
 
@@ -103,7 +105,7 @@ This repository contains code to run the University of Washington Snow on Antarc
 
 17. Once you are satisfied with the calibration outcome, executing the **"Model launching routine"** cell will launch several one-year free-running model simulations spanning the specified range of years. These are full circumpolar integrations with Lagrangian parcels advected by ice motion fields. Similar to the calibration routine, this set of model runs is launched by a separate Python "helper" script, `snow_lagrangian_free_launcher.py`, and no further action is needed once the cell is run beyond monitoring the status of the runs using the `.out` log files.
 
-### Instructions, part 3 – processing the model output and reproducing analyses:
+## Instructions, part 4 – processing the model output and reproducing analyses/visualizations:
 
 > [!NOTE]
 > The notebook cells within the section **"Plots and analysis of results"** mix model output processing with analysis and visualization. The steps described below focus on how to process the model output, because running the analysis/visualization cells should be straightforward.
