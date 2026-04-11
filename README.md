@@ -18,7 +18,7 @@ This code is freely available for reuse as described in the MIT License included
 
 ## Description
 
-This repository contains Python code to run the University of Washington Snow on Antarctic Ice Lagrangian (WASSAIL) model and generate the figures presented in the associated study.
+This repository contains Python code and relevant files for running the University of Washington Snow on Antarctic Ice Lagrangian (WASSAIL) model and generating the figures presented in the associated study.
 
 The input data for the model are all publicly available (see the "Code and data availability" statement in the paper). Model output fields, representing the snow mass budget evolution, are archived separately on Zenodo (see above). Reuse of all of the above is welcomed.
 
