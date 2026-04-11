@@ -4,7 +4,9 @@
 
 Please contact me at [ethancc@uw.edu](mailto:ethancc@uw.edu) if you have any questions regarding this code.
 
+
 ![WASSAIL model schematic](wassail_schematic.png)
+
 
 ## Attribution:
 This code is freely available for reuse as described in the MIT License included in this repository. If using this code and/or model data in an academic publication, we encourage you to provide the following citations, as appropriate:
@@ -12,15 +14,18 @@ This code is freely available for reuse as described in the MIT License included
 * **Zenodo code archive**: Campbell, E.C. (2026, April 10). WASSAIL model and analysis code, v1.0. Zenodo. doi:TBD
 * **Zenodo model data archive**: Campbell, E.C., Riser, S.C., Webster, M.A. (2026, April 10). University of Washington Snow on Antarctic Ice Lagrangian (WASSAIL) model, v1.0.0 (2003-2025). Zenodo. doi:TBD
 
+
 ## Description:
 
 This repository contains code to run the University of Washington Snow on Antarctic Ice Lagrangian (WASSAIL) model and generate the figures presented in the associated study. The data used to run the model are all publicly available (see the "Code and data availability" statement in the paper). Model output fields are archived separately on Zenodo (see above) and reuse is welcomed.
+
 
 ## Prerequisites:
 
 1. Python 3 and `conda` (or `mamba`) installed. The [Anaconda](https://www.anaconda.com/download) distribution is recommended.
 
 2. A Linux server with at least several cores, for efficient parallelization of multiple one-year model runs. Single-year model runs can be run sequentially within the provided Jupyter notebook, probably on any machine, but the parallelization functionality has not been tested outside of a Linux environment. RAM may become a limiting factor if running the model on a laptop.
+
 
 ## Instructions, part 1 – setting up the coding environment:
 
@@ -53,7 +58,11 @@ This repository contains code to run the University of Washington Snow on Antarc
 > [!NOTE]
 > The sub-directory `Data/Processed/wassail_tuning` contains three files. `buoy_split_assignments.csv` denotes the random partioning between the calibration and validation sets of snow buoys used in the current model version. `snow_model_params_tuning.csv` is a table of the parameter values and statistics throughout the calibration routine; recall that the model calibration routine has a stochastic element, so it will generate a different parameter optimization every time it is run. `parcels_input.nc` is a netCDF file containing ERA5 fields interpolated to snow buoy locations (it can be regenerated within the notebook, but is archived here for convenience). This directory also contains sub-directories `rung0` and `rung12` with output files that are helpful for reproducing some of the study visualizations (these can also be reproduced, but not without writing additional code for custom model runs).
 
+
 ## Instructions, part 2 – downloading and processing input data:
+
+> [!TIP]
+> If you need to download all the required input data, this will likely take around 1-3 days. I recommend starting by submitting the ERA5 Copernicus data requests so they can be queued and run in the cloud while you download other data locally.
 
 7. In the **"Download and process data"** cell, set the boolean variables at the top to `True` to download the corresponding data sets, as needed. I recommend doing this individually, running the cell for each download, and setting the switch back to `False` afterwards. As mentioned above, the AWI snow buoy, NSIDC CDR Near-Real-Time ice concentration, and NSIDC Polar Pathfinder 'Quicklook' ice motion data are provided in `wassail.zip` for reproducibility and do not have to be re-downloaded unless you are running the model over different time periods.
 
@@ -68,6 +77,7 @@ This repository contains code to run the University of Washington Snow on Antarc
 9. If you wish to reproduce the snow depth comparison figure or snow-ice formation analysis, download the Fons et al. (2023) CryoSat-2 snow depth estimates at [zenodo.org/records/7327711](https://zenodo.org/records/7327711). The monthly files should go in `Data/Sea ice thickness/Fons_2023_CryoSat2`.
 
 10. Run the next cell, **"Load data/grids and regrid data"**, after setting the boolean switches for `regrid_ice_concentration`, `regrid_pathfinder`, and `regrid_pathfinder_ql` to `True`. This will regrid data to the ERA5 grid, interpolate missing data, and export new files. Note the time estimate for the Polar Pathfinder regridding routine. I suggest setting boolean switches back to `False` after it finishes.
+
 
 ## Instructions, part 3 – configuring and running the model:
 
@@ -99,11 +109,15 @@ This repository contains code to run the University of Washington Snow on Antarc
 > - *One useful feature is that the model saves output netCDF files every 7 days, by default, in `Data/Processed/wassail_output_free/<YEAR>/`. The model can be initialized from an output file by setting `restart_from_output = True` and specifying `restart_file`.*
 > - *The model code includes an in-development "lock-up" parameterization that limits the snow available for wind transport over time after deposition; this functionality is turned off by default and is not described in the paper.*
 
-15. If you do not need to calibrate the model, you can ignore the cell **"Model tuning routine"** and rely on the calibration output file `snow_model_params_tuning.csv` included in `wassail.zip` for the parameter evolution, including the final parameter set. If you are calibrating the model, follow instructions in the in-line comments. This cell uses the same `nohup` command described above, but it runs a separate Python "helper" script, `snow_lagrangian_tuning_launcher.py`, which manages the successive halving calibration routine (see paper for details). The script iterates through each rung of the tuning procedure, launching batches of 56 model runs per rung with Lagrangian parcels following buoy trajectories, until the stopping criterion is reached. The entire procedure occurs automatically.
+15. If you do not need to calibrate the model, you can ignore the cell **"Model tuning routine"** and rely on the calibration output file `snow_model_params_tuning.csv` included in `wassail.zip` for the parameter evolution, including the final parameter set. If you are calibrating the model, follow instructions in the in-line comments. This cell uses the same `nohup` command described above, but it runs a separate Python "helper" script, `snow_lagrangian_tuning_launcher.py`, which manages the successive halving calibration routine (see paper for details). The script iterates through each rung of the tuning procedure, launching batches of 56 parallelized model runs per rung with the Lagrangian parcels following buoy trajectories, until the stopping criterion is reached. The entire procedure occurs automatically.
 
-16. The next few cells can be executed to display the parameter tuning results.
+> [!NOTE]
+> I set the parameter ensemble at 54 members (plus two default runs per rung) because I am using a 64-CPU server, and I wanted to leave 10 cores unused. If your server has fewer cores and you find that these parallelized batches cause problems, you may need to modify the code to split each rung into multiple sets of jobs. I would not advise decreasing the number of ensemble members, as this would impact the performance of the optimization algorithm.
 
-17. Once you are satisfied with the calibration outcome, executing the **"Model launching routine"** cell will launch several one-year free-running model simulations spanning the specified range of years. These are full circumpolar integrations with Lagrangian parcels advected by ice motion fields. Similar to the calibration routine, this set of model runs is launched by a separate Python "helper" script, `snow_lagrangian_free_launcher.py`, and no further action is needed once the cell is run beyond monitoring the status of the runs using the `.out` log files.
+17. The next few cells can be executed to display the parameter tuning results.
+
+18. Once you are satisfied with the calibration outcome, executing the **"Model launching routine"** cell will launch several one-year free-running model simulations spanning the specified range of years. These are full circumpolar integrations with Lagrangian parcels advected by ice motion fields, and they will run in parallel depending on the number of cores available on your server. Similar to the calibration routine, this set of model runs is launched by a separate Python "helper" script, `snow_lagrangian_free_launcher.py`, and no further action is needed once the cell is run beyond monitoring the status of the runs using the `.out` log files.
+
 
 ## Instructions, part 4 – processing the model output and reproducing analyses/visualizations:
 
