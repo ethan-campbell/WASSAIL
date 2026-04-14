@@ -16,7 +16,7 @@ If using the code and/or model data in an academic publication, we encourage you
 * **Code archive**: Campbell, E.C. (2026, April 11). University of Washington Snow on Antarctic Ice Lagrangian (WASSAIL) model and analysis code, v1.0.0. Zenodo. doi:[10.5281/zenodo.19509689](https://doi.org/10.5281/zenodo.19509689)
 * **Snow model output data archive**: Campbell, E.C. (2026, April 11). University of Washington Snow on Antarctic Ice Lagrangian (WASSAIL) model data, v1.0.0 (2003-2025). Zenodo. doi:[10.5281/zenodo.19507962](https://doi.org/10.5281/zenodo.19507962)
 
-This code is freely available for reuse as described in the MIT License included in the repository. The model output data can be reused as specified in its CC-BY-4.0 license.
+This code is freely available for reuse as described in the MIT license included in the repository. The model output data can be reused as specified in its CC-BY-4.0 license.
 
 ## Description
 
