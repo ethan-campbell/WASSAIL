@@ -16,7 +16,7 @@ If using the code and/or model data in an academic publication, we encourage you
 * **Code archive**: Campbell, E.C. (2026, April 11). University of Washington Snow on Antarctic Ice Lagrangian (WASSAIL) model and analysis code, v1.0.0. Zenodo. doi:[10.5281/zenodo.19509689](https://doi.org/10.5281/zenodo.19509689)
 * **Snow model output data archive**: Campbell, E.C. (2026, April 11). University of Washington Snow on Antarctic Ice Lagrangian (WASSAIL) model data, v1.0.0 (2003-2025). Zenodo. doi:[10.5281/zenodo.19507962](https://doi.org/10.5281/zenodo.19507962)
 
-This code is freely available for reuse as described in the MIT license included in the repository. The model output data can be reused as specified in its CC-BY-4.0 license.
+This code is freely available for reuse as described in the MIT license included in the repository. The model output data can be freely reused as specified in its CC-BY-4.0 license.
 
 ## Description
 
@@ -51,7 +51,7 @@ The input data for the model are all publicly available (see the "Code and data 
 > [!NOTE]
 > This single Jupyter notebook contains almost all of the model and analysis code. The `Toolbox/` directory contains a few `.py` Python scripts with auxiliary functions, mostly for downloading and loading data. The notebook is documented throughout and is intended to be run from top to bottom, which will allow you to download and process input data, configure the model, run the model (both in "calibration mode" and as "free-running simulations"; see the paper for details), process the model output, and visualize/analyze results. Housing the entire model within a Jupyter notebook did create challenges for parallelization and background runs, which led to some interesting ad hoc solutions that are described below.
 
-5. Start by running the **"Import statements"** notebook cell. Confirm that the `conda` environment is functioning correctly.
+5. Start by running the **"Import statements"** notebook cell. Verify that the `conda` environment is functioning correctly.
 
 6. In the **"Set file paths and import custom functions"** cell, update the directory names as needed, then execute the cell:
 - *Under the relevant computing system's section, the variable `data_dir` should be updated to point to the `Data/` directory within this repository.*
@@ -72,7 +72,7 @@ The input data for the model are all publicly available (see the "Code and data 
 > [!TIP]
 > If you need to download all the required input data, this will likely take around 1-3 days. I recommend starting by submitting the ERA5 Copernicus data requests so they can be queued and run in the cloud while you download other data locally.
 
-7. In the **"Download and process data"** cell, set the boolean variables at the top to `True` to download the corresponding data sets, as needed. I recommend doing this individually, running the cell for each download, and setting the switch back to `False` afterwards. As mentioned above, the AWI snow buoy, NSIDC CDR Near-Real-Time ice concentration, and NSIDC Polar Pathfinder 'Quicklook' ice motion data are provided in `` for reproducibility and do not have to be re-downloaded unless you are running the model over different time periods.
+7. In the **"Download and process data"** cell, set the boolean variables at the top to `True` to download the corresponding data sets, as needed. I recommend doing this individually, running the cell for each download, and setting the switch back to `False` afterwards. As mentioned above, the AWI snow buoy, NSIDC CDR Near-Real-Time ice concentration, and NSIDC Polar Pathfinder 'Quicklook' ice motion data are provided in `wassail.zip` for reproducibility and do not have to be re-downloaded unless you are running the model over different time periods.
 
 > [!IMPORTANT]
 > You will need a NASA Earthdata account, as some NSIDC download routines will prompt you for your login credentials. Additionally, the ERA5 download routine requires an ECMWF account as well as local installation of a Copernicus CDS API key; see [here](https://cds.climate.copernicus.eu/how-to-api) for how to set this up. If you see "Request is queued" after running the ERA5 download code, you can exit using `Ctrl-C`. You can track the status of your ERA5 download requests and obtain the download links at [cds.climate.copernicus.eu/requests?tab=all](https://cds.climate.copernicus.eu/requests?tab=all), then use `wget` or similar to download the ERA5 files into `Data/Reanalysis/ERA5/`. Please see the documentation in the notebook for more info. This is the only download routine that does not run fully automatically.
