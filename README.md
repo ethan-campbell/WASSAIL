@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19509688.svg)](https://doi.org/10.5281/zenodo.19509688)
+
 # University of Washington Snow on Antarctic Ice Lagrangian (WASSAIL) model
 
 **This repository contains the model and analysis code for Campbell et al. (preprint), "Lagrangian reconstruction of snow accumulation and loss on Antarctic sea ice", submitted to _The Cryosphere_.**
@@ -10,15 +12,15 @@ Please contact me at [ethancc@uw.edu](mailto:ethancc@uw.edu) if you have any que
 
 ## Attribution
 If using the code and/or model data in an academic publication, we encourage you to provide the following citations, as appropriate:
-* **Preprint**: Campbell, E.C., Riser, S.C., Webster, M.A. (2026). Lagrangian reconstruction of snow accumulation and loss on Antarctic sea ice. _EGUsphere_ [preprint].
-* **Code archive**: Campbell, E.C. (2026, April 11). University of Washington Snow on Antarctic Ice Lagrangian (WASSAIL) model and analysis code, v1.0.0. Zenodo.
+* **Preprint**: Campbell, E.C., Riser, S.C., Webster, M.A. (2026). Lagrangian reconstruction of snow accumulation and loss on Antarctic sea ice. _EGUsphere_ [preprint]. doi:[10.5194/egusphere-2026-2089](https://doi.org/10.5194/egusphere-2026-2089)
+* **Code archive**: Campbell, E.C. (2026, April 11). University of Washington Snow on Antarctic Ice Lagrangian (WASSAIL) model and analysis code, v1.0.0. Zenodo. doi:[10.5281/zenodo.19509689](https://doi.org/10.5281/zenodo.19509689)
 * **Snow model output data archive**: Campbell, E.C. (2026, April 11). University of Washington Snow on Antarctic Ice Lagrangian (WASSAIL) model data, v1.0.0 (2003-2025). Zenodo. doi:[10.5281/zenodo.19507962](https://doi.org/10.5281/zenodo.19507962)
 
-This code is freely available for reuse as described in the MIT License included in the repository. The model output data can be reused as specified in its CC-BY-4.0 license.
+This code is freely available for reuse as described in the MIT license included in the repository. The model output data can be freely reused as specified in its CC-BY-4.0 license.
 
 ## Description
 
-This repository contains Python code to run the University of Washington Snow on Antarctic Ice Lagrangian (WASSAIL) model and generate the figures presented in the associated study.
+This repository contains Python code and relevant files for running the University of Washington Snow on Antarctic Ice Lagrangian (WASSAIL) model and generating the figures presented in the associated study.
 
 The input data for the model are all publicly available (see the "Code and data availability" statement in the paper). Model output fields, representing the snow mass budget evolution, are archived separately on Zenodo (see above). Reuse of all of the above is welcomed.
 
@@ -32,7 +34,7 @@ The input data for the model are all publicly available (see the "Code and data 
 
 ## Instructions, part 1 – setting up the coding environment
 
-1. Clone or download this GitHub repository. Unzip the `wassail.zip` file (e.g., using the command `unzip wassail.zip`), which contains a directory structure and various files.
+1. Clone or download this GitHub repository. Then navigate to the most recent GitHub [release](https://github.com/ethan-campbell/WASSAIL/releases), download the file `wassail.zip`, and unzip it within the repository (e.g., using the command `unzip wassail.zip`). This will provide a directory structure and various files needed to run the model code.
 
 > [!NOTE]
 > For future reproducibility, the AWI snow buoy calibration/validation data used for the paper (last accessed 1 May 2025) are archived within this `.zip` file, in `Data/Buoys/`, because the data are continuously updated at [their source](https://data.meereisportal.de/relaunch/buoy.php) and a static archive does not appear to exist elsewhere. NSIDC CDR Near-Real-Time sea ice concentration data for part of 2025 are also archived in `Data/Sea ice concentration/CDR_NRT_v3/` and NSIDC Polar Pathfinder 'Quicklook' preliminary ice motion data for 2024-01-01 to 2025-04-01 are archived in `Data/Sea ice drift/`, since these may disappear from NSIDC as data are finalized. The directories also contain grid/area files for certain products.
@@ -49,7 +51,7 @@ The input data for the model are all publicly available (see the "Code and data 
 > [!NOTE]
 > This single Jupyter notebook contains almost all of the model and analysis code. The `Toolbox/` directory contains a few `.py` Python scripts with auxiliary functions, mostly for downloading and loading data. The notebook is documented throughout and is intended to be run from top to bottom, which will allow you to download and process input data, configure the model, run the model (both in "calibration mode" and as "free-running simulations"; see the paper for details), process the model output, and visualize/analyze results. Housing the entire model within a Jupyter notebook did create challenges for parallelization and background runs, which led to some interesting ad hoc solutions that are described below.
 
-5. Start by running the **"Import statements"** notebook cell. Confirm that the `conda` environment is functioning correctly.
+5. Start by running the **"Import statements"** notebook cell. Verify that the `conda` environment is functioning correctly.
 
 6. In the **"Set file paths and import custom functions"** cell, update the directory names as needed, then execute the cell:
 - *Under the relevant computing system's section, the variable `data_dir` should be updated to point to the `Data/` directory within this repository.*
@@ -73,7 +75,7 @@ The input data for the model are all publicly available (see the "Code and data 
 7. In the **"Download and process data"** cell, set the boolean variables at the top to `True` to download the corresponding data sets, as needed. I recommend doing this individually, running the cell for each download, and setting the switch back to `False` afterwards. As mentioned above, the AWI snow buoy, NSIDC CDR Near-Real-Time ice concentration, and NSIDC Polar Pathfinder 'Quicklook' ice motion data are provided in `wassail.zip` for reproducibility and do not have to be re-downloaded unless you are running the model over different time periods.
 
 > [!IMPORTANT]
-> You will need a NASA Earthdata account, as some NSIDC download routines will prompt you for your login credentials. Additionally, the ERA5 download routine requires an ECMWF account as well as local installation of a Copernicus CDS API key; see [here](https://cds.climate.copernicus.eu/how-to-api) for how to set this up. If you see "Request is queued" after running the ERA5 download code, you can exit using `Ctrl-C`. You can track the status of your ERA5 download requests and obtain the download links at [cds.climate.copernicus.eu/requests?tab=all](https://cds.climate.copernicus.eu/requests?tab=all), then use `wget` or similar to download the ERA5 files into `Data/Reanalysis/ERA5/`. Please see the documentation in the notebook for more info. This is the only download routine that does not run fully automatically.
+> You will need a NASA Earthdata account, as some NSIDC download routines will prompt you for your login credentials. Additionally, the ERA5 download routine requires an ECMWF account as well as local installation of a Copernicus CDS API key; see [here](https://cds.climate.copernicus.eu/how-to-api) for how to set this up. If you see "Request is queued" after running the ERA5 download code, the request has been successfully submitted and you can exit using `Ctrl-C`. You can track the status of your ERA5 download requests and obtain the download links at [cds.climate.copernicus.eu/requests?tab=all](https://cds.climate.copernicus.eu/requests?tab=all), then use `wget` or similar to download the ERA5 files into `Data/Reanalysis/ERA5/`. Please see the documentation in the notebook for more info. This is the only download routine that does not run fully automatically.
 
 8. Once the ERA5 data have been downloaded, use the final boolean switch (`process_era5`) in the **"Download and process data"** cell to process the ERA5 data. You can delete the original files moved to `Data/Reanalysis/ERA5/To delete/` after this finishes.
 
@@ -91,14 +93,14 @@ The input data for the model are all publicly available (see the "Code and data 
 
 12. The following cell, **"Prescribed model run setup (snow buoys)"**, processes the snow buoy data in preparation for model calibration runs. Since the pre-processed file `parcels_input.nc` is provided in `wassail.zip`, you can simply load the buoy file by setting `use_existing_parcels_input` to `True` and running this cell. Similarly, setting `use_existing_buoy_split` to `True` will load the buoy calibration vs. validation assignments used in the paper, as specified in `buoy_split_assignments.csv`, also provided. On the other hand, if you wish to regenerate the processed buoy file, set `use_existing_parcels_input` to `False` and run the cell. To regenerate the random buoy split, set `use_existing_buoy_split` to False.
 
-13. The next cell, **"Launch one-time prescribed model run (to interpolate ERA5 to snow buoy locations)"** runs the model one time along all buoy trajectories. While doing so, it interpolates ERA5 fields and derived quantities to the buoy locations and updates `parcels_input.nc`. This does not have to be run if you are using the provided, pre-processed version of `parcels_input.nc`.
+13. The next cell, **"Launch one-time prescribed model run (to interpolate ERA5 to snow buoy locations)"** runs a single model integration along all buoy trajectories. While doing so, it interpolates ERA5 fields and derived quantities to the buoy locations and updates `parcels_input.nc`. This step does not have to be run if you are using the provided, pre-processed version of `parcels_input.nc`.
 
 > [!TIP]
 > Even if you are not running the buoy/ERA5 interpolation routine, this notebook cell is instructive in illustrating how the snow model gets executed (and later parallelized). I recommend taking time to understand the following elements:
 > - *Setting `launch_buoy_interpolator_run` to `True` allows execution (see the inline comments for relevant details).*
 > - *The cell uses the `jupyter nbconvert` command-line utility to convert the notebook itself into a separate executable `.py` Python script.*
 > - *That script is then launched using another command-line call to `nohup python3`, which allows the job to persist so the model runs in the background. Output is written continuously to a `.out` file, which you can monitor using command-line tools like `less` to ensure the model is executing without errors. You can check the `.out` file or your Linux processes (`top -u <your_username>`) to see when the model finishes running.*
-> - *How does the converted `.py` script avoid a never-ending recursive loop of additional model runs upon execution? Notice that the `nohup python3` call passes a command-line argument to the script, designating it as a "worker_buoy_interpolator". This argument is checked within the script to signal that it is being run as a "worker" (i.e., not from the main Jupyter notebook). Lastly, notice that block comments (`"""` `"""`) enclose the calibration routine and analysis code, ensuring that anything after the model code is ignored by the "worker" scripts.
+> - *The converted `.py` script avoids generating a never-ending recursive loop of additional model runs upon execution using a few techniques. Notice that the `nohup python3` call passes a command-line argument to the script, designating it as a "worker_buoy_interpolator". This argument is checked within the script to signal that it is being run as a "worker" (i.e., not from the main Jupyter notebook), which tells the script to not generate further unwanted model runs. Additionally, notice that block comments (`"""` `"""`) enclose the calibration routine and analysis code, ensuring that anything after the model code is ignored by the "worker" scripts.*
 
 > [!CAUTION]
 > It is vitally important to keep boolean switches throughout the notebook set to their default provided values (usually `False`) to prevent undesired execution of data download or processing routines by the worker jobs.
