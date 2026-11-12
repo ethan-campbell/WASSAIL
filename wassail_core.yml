@@ -1,0 +1,35 @@
+name: wassail
+channels:
+  - conda-forge
+dependencies:
+  - bottleneck
+  - cartopy
+  - cdsapi
+  - cmocean
+  - cython
+  - dask
+  - geopandas
+  - h5netcdf
+  - h5py
+  - ipykernel
+  - ipython
+  - matplotlib
+  - netcdf4
+  - numpy
+  - pandas
+  - pip
+  - pyproj
+  - pyshp
+  - python
+  - rasterio
+  - requests
+  - scipy
+  - setuptools
+  - shapely
+  - urllib3
+  - wheel
+  - xarray
+  - xesmf
+  - xhistogram
+
+prefix: "/dat1/ethancc/Miniconda3/envs/wassail"

@@ -350,17 +350,17 @@ def load_era5(data_dir,process_and_export=False,datetime_range=None,lat_range=No
             if 'valid_time' in ds.coords:
                 ds = ds.rename({'valid_time':'time'})
             if 'number' in ds.coords:
-                ds = ds.drop('number')
+                ds = ds.drop_vars('number')
             if 'expver' in ds.variables:
                 if ds['expver'].dims[0] == 'time' or ds['expver'].dims[0] == 'valid_time':
-                    ds = ds.drop('expver')
+                    ds = ds.drop_vars('expver')
             for grib_name in grib_rename.index:
                 if grib_name in ds.variables:
                     ds = ds.rename({grib_name:grib_rename.loc[grib_name][grib_str + '_var']})
                     ds[grib_rename.loc[grib_name][grib_str + '_var']].attrs['long_name'] = grib_rename.loc[grib_name][grib_str + '_long']
             # ds = ds.chunk({'time':time_chunk,'latitude':lat_chunk,'longitude':lon_chunk})
             return ds
-        all_data = xr.open_mfdataset(data_dir + '*.nc',combine='by_coords',preprocess=era5_preprocess,
+        all_data = xr.open_mfdataset(data_dir + '*.nc',combine='by_coords',join='outer',preprocess=era5_preprocess,
                                      chunks={'valid_time':time_chunk,'time':time_chunk,'latitude':lat_chunk,'longitude':lon_chunk})
         
     # re-chunk (sometimes necessary when combining if some time indices have different lengths)
